@@ -20,6 +20,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -29,6 +31,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import com.example.news.uikit.NewsTheme
 
 @Composable
@@ -118,12 +121,20 @@ internal fun Article(
 ) {
     Row(Modifier.padding(bottom = 4.dp)) {
         article.imageUrl?.let { imageUrl ->
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = stringResource(R.string.content_desc_item_article_image),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.heightIn(150.dp).widthIn(max = 150.dp)
-            )
+            var isImageVisible by  mutableStateOf(true)
+            if (isImageVisible) {
+                AsyncImage(
+                    model = imageUrl,
+                    onState = { state ->
+                        if (state is AsyncImagePainter.State.Error) {
+                            isImageVisible = false
+                        }
+                    },
+                    contentDescription = stringResource(R.string.content_desc_item_article_image),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(150.dp)
+                )
+            }
         }
         Spacer(modifier = Modifier.size(4.dp))
         Column(modifier = Modifier.padding(8.dp)) {
