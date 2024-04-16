@@ -26,3 +26,5 @@ jobs:
               uses: jwgmeligmeyling/checkstyle-github-action@master
               with:
                   path: '**/detekt.xml'
+
+#
