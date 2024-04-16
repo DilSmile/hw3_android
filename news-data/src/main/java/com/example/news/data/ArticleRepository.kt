@@ -22,7 +22,8 @@ import kotlinx.coroutines.flow.onEach
 
 @Suppress("UNREACHABLE_CODE")
 class ArticleRepository
-@Inject constructor(
+@Inject
+constructor(
     private val database: NewsDatabase,
     private val api: NewsApi,
     private val logger: Logger
