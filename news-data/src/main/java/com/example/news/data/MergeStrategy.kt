@@ -10,6 +10,7 @@ interface MergeStrategy<E> {
 }
 
 internal class RequestResponseMergeStrategy<T : Any> : MergeStrategy<RequestResult<T>> {
+    @Suppress("CyclomaticComplexMethod")
     override fun merge(
         right: RequestResult<T>,
         left: RequestResult<T>
