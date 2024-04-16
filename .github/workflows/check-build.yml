@@ -1,28 +1,30 @@
 name: Code quality check
-run-name: Check code quality with linter
-on: [push]
+on:
+    push:
+        branches:
+            - main
+
 jobs:
     Detekt:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+              uses: actions/checkout@v4
 
-            - name: set up JDK
-              uses: actions/setup-java@v4
+            - name: Set up JDK
+              uses: actions/setup-java@v2
               with:
                   distribution: 'temurin'
-                  java-version: 17
+                  java-version: '17'
 
-            - uses: gradle/gradle-build-action@v3
-              with:
-                  cache-disabled: true
+            - name: Grant execute permissions to gradlew
+              run: chmod +x ./gradlew
 
             - name: Detekt
-              shell: bash
               run: ./gradlew detekt
 
             - name: Publish Detekt reports
               uses: jwgmeligmeyling/checkstyle-github-action@master
               with:
                   path: '**/detekt.xml'
+
