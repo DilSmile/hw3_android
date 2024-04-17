@@ -16,7 +16,7 @@ jobs:
 
             - uses: gradle/actions/wrapper-validation@v3
               with:
-                  cache-disabled: true
+                min-wrapper-count: 1
 
             - name: Change wrapper permissions
               run: chmod +x ./gradlew
