@@ -1,28 +1,27 @@
 [versions]
-agp = "8.3.0"
+agp = "8.3.2"
 annotation = "1.7.1"
-kotlin = "1.9.22"
-kotlin-serialization-json = "1.6.3"
+androidx-lifecycle = "2.7.0"
+activityCompose = "1.8.2"
+appcompat = "1.6.1"
+composeBom = "2024.02.02"
 coreKtx = "1.12.0"
+dagger = "2.50"
+espressoCore = "3.5.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-androidx-lifecycle = "2.7.0"
-
-activityCompose = "1.8.2"
-composeBom = "2024.02.02"
-retrofit = "2.9.0"
+javax-inject = "1"
+jakarta-inject = "2.0.1"
+kotlin = "1.9.22"
+kotlin-serialization-json = "1.6.3"
 kotlinx-coroutines = "1.8.0"
+ksp = "1.9.22-1.0.17"
+okhttp = "4.12.0"
+retrofit = "2.9.0"
 retrofitAdaptersResult = "1.0.9"
 retrofitConverterKotlinxSerialization = "1.0.0"
-appcompat = "1.6.1"
-material = "1.11.0"
 room = "2.6.1"
-ksp = "1.9.22-1.0.17"
-dagger = "2.50"
-javax-inject = "1"
-okhttp = "4.12.0"
-jakarta-inject = "2.0.1"
+material = "1.11.0"
 coil = "2.6.0"
 detekt = "1.23.3"
 
@@ -91,6 +90,5 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+androidx-room = { id = "androidx.room", version.ref = "room" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-
-
