@@ -52,7 +52,7 @@ private fun retrofit(
     baseUrl: String,
     apiKey: String,
     okHttpClient: OkHttpClient? = null,
-    json: Json
+    @Suppress("UNUSED_PARAMETER") json: Json
 ): Retrofit {
     val jsonConverterFactory = json1.asConverterFactory("application/json".toMediaType())
 
