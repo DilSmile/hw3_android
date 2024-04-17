@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 
 @Suppress("UNREACHABLE_CODE", "unused")
-class ArticlesRepository @Inject constructor(
+class ArticleRepository @Inject constructor(
     private val database: NewsDatabase,
     private val api: NewsApi,
     private val logger: Logger,
