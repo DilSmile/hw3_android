@@ -20,18 +20,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 
-@Suppress("UNREACHABLE_CODE")
-class ArticleRepository
-@Inject
-constructor(
+@Suppress("UNREACHABLE_CODE", "unused")
+class ArticlesRepository @Inject constructor(
     private val database: NewsDatabase,
     private val api: NewsApi,
-    private val logger: Logger
+    private val logger: Logger,
 ) {
     @SuppressLint("SuspiciousIndentation")
     fun getAll(
         query: String,
-        mergeStrategy: MergeStrategy<RequestResult<List<Article>>> = RequestResponseMergeStrategy()
+        mergeStrategy: MergeStrategy<RequestResult<List<Article>>> = RequestResponseMergeStrategy(),
     ): Flow<RequestResult<List<Article>>> {
         val cachedAllArticles: Flow<RequestResult<List<Article>>> = getAllFromDatabase()
         val remoteArticles: Flow<RequestResult<List<Article>>> = getAllFromServer(query)
@@ -49,20 +47,19 @@ constructor(
     }
 
     private fun getAllFromServer(query: String): Flow<RequestResult<List<Article>>> {
-        val apiRequest =
-            flow { emit(api.everything(query)) }
-                .onEach { result ->
-                    if (result.isSuccess) saveNetResponseToCache(result.getOrThrow().articles)
+        val apiRequest = flow { emit(api.everything(query)) }
+            .onEach { result ->
+                if (result.isSuccess) saveNetResponseToCache(result.getOrThrow().articles)
+            }
+            .onEach { result ->
+                if (result.isFailure) {
+                    logger.e(
+                        LOG_TAG,
+                        "ERROR getting data from server. Reason = ${result.exceptionOrNull()}"
+                    )
                 }
-                .onEach { result ->
-                    if (result.isFailure) {
-                        logger.e(
-                            LOG_TAG,
-                            "ERROR getting data from server. Reason = ${result.exceptionOrNull()}"
-                        )
-                    }
-                }
-                .map { it.toRequestResult() }
+            }
+            .map { it.toRequestResult() }
 
         val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
         return merge(apiRequest, start)
@@ -79,14 +76,12 @@ constructor(
     }
 
     private fun getAllFromDatabase(): Flow<RequestResult<List<Article>>> {
-        val dbRequest =
-            database.articlesDao::getAll.asFlow()
-                .map<List<ArticleDBO>, RequestResult<List<ArticleDBO>>> { RequestResult.Success(it) }
-                .catch {
-                    logger.e(LOG_TAG, "Error getting from database. Reason: $it")
-                    emit(RequestResult.Error<List<ArticleDBO>>(error(it)))
-                }
-
+        val dbRequest = database.articlesDao::getAll.asFlow()
+            .map<List<ArticleDBO>, RequestResult<List<ArticleDBO>>> { RequestResult.Success(it) }
+            .catch {
+                logger.e(LOG_TAG, "Error getting from database. Reason: $it")
+                emit(RequestResult.Error<List<ArticleDBO>>(error(it)))
+            }
         val start = flowOf<RequestResult<List<ArticleDBO>>>(RequestResult.InProgress())
         return merge(start, dbRequest).map { result ->
             result.map { articleDbos ->
@@ -98,8 +93,7 @@ constructor(
     private companion object {
         const val LOG_TAG = "ArticlesRepository"
     }
-
-    suspend fun search(query: String): Flow<Article> {
+    suspend fun search(): Flow<Article> {
         api.everything()
         TODO("Not implemented")
     }
