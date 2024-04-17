@@ -93,6 +93,7 @@ class ArticleRepository @Inject constructor(
     private companion object {
         const val LOG_TAG = "ArticlesRepository"
     }
+
     suspend fun search(): Flow<Article> {
         api.everything()
         TODO("Not implemented")
